@@ -80,7 +80,7 @@ module.exports = class API {
                             } else {
                                 if(isMatch) {
                                     // generate token 
-                                    let token = jwt.sign( {user: user.UserName, role: user.UserRole }, secret, {expiresIn: 86400});
+                                    let token = jwt.sign({ user: user.UserName, role: user.UserRole, id: user._id }, secret, {expiresIn: 86400});
                                     res.status(200).json({ type: "success", message: "Login success", token: token });
                                 } else {
                                     res.status(400).json({ type: "error", message: serverMessages.E_LOGIN });
@@ -95,7 +95,7 @@ module.exports = class API {
     }
 
     static async getAllUsers(req, res) {
-        res.status(200).json({ message: `${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
+        res.status(200).json({ message: `User id ${req.authData.id} of name ${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
     }
 }
 
