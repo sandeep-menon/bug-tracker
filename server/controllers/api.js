@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const serverMessages = require("../config/server-messages");
 const bcrypt = require("bcryptjs");
-const e = require("express");
 
 module.exports = class API {
     static async homeRoute(req, res) {
@@ -16,6 +15,7 @@ module.exports = class API {
         const userRole = req.body.UserRole;
 
         if(userPass1 !== userPass2) {
+            // checking passwords matching
             res.status(400).json({ type: "error", message: serverMessages.E_PASSWORD_1 });
         }
 
@@ -23,8 +23,10 @@ module.exports = class API {
             User.findOne( {UserEmail: userEmail })
                 .then( (user) => {
                     if(user) {
+                        // user already exists
                         res.status(400).json({ type: "info", message: serverMessages.I_EMAIL });
                     } else {
+                        // save user to db
                         const newUser = new User({
                             UserName: userName,
                             UserEmail: userEmail,
@@ -32,6 +34,7 @@ module.exports = class API {
                             UserRole: userRole
                         });
 
+                        // hashing password to save password in encrypted form
                         bcrypt.genSalt(10, (err, salt) => {
                             bcrypt.hash(newUser.UserPass, salt, (err, hash) => {
                                 if(err) res.send(500).json({ type: "error", message: `${serverMessages.E_SERVER}: ${err.message}` });
@@ -65,8 +68,10 @@ module.exports = class API {
             User.findOne( {UserEmail: userEmail })
                 .then( (user) => {
                     if(!user) {
+                        // user not found
                         res.status(400).json({ type: "error", message: serverMessages.E_EMAIL });
                     } else {
+                        // comparing the hashed password
                         bcrypt.compare(userPass, user.UserPass, (err, isMatch) => {
                             if(err) {
                                 res.status(500).json({ type: "error", message: `${serverMessages.E_SERVER}: ${err.message}` });
