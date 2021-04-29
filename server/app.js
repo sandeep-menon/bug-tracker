@@ -24,7 +24,7 @@ mongoose.connect(db, {
 app.use("/api", require("./routes/routes"));
 
 app.get("/", (req, res) => {
-    res.send("Server is up and running.");
+    res.send("Server is up and running."); 
 });
 
 app.listen(PORT, () => {
