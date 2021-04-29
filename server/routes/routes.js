@@ -4,6 +4,6 @@ const API = require("../controllers/api");
 
 router.get("/", API.homeRoute);
 router.post("/user/register", API.registerUser);
-router.post("/user/login");
+router.post("/user/login", API.loginUser);
 
 module.exports = router;

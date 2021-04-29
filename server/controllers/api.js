@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const serverMessages = require("../config/server-messages");
 const bcrypt = require("bcryptjs");
+const e = require("express");
 
 module.exports = class API {
     static async homeRoute(req, res) {
@@ -19,7 +20,6 @@ module.exports = class API {
         }
 
         if(checkUserName(userName) && checkUserEmail(userEmail) && checkUserRole(userRole)) {
-            // res.status(200).json({ type: "success", message: serverMessages.S_USER_1 });
             User.findOne( {UserEmail: userEmail })
                 .then( (user) => {
                     if(user) {
@@ -52,6 +52,34 @@ module.exports = class API {
                 .catch( (err) => {
                     res.status(500).json({ type: "error", message: `${serverMessages.E_SERVER}: ${err.message}` });
                 });
+        } else {
+            res.status(400).json({ type: "error", message: serverMessages.E_DATA_1 });
+        }
+    }
+
+    static async loginUser(req, res) {
+        const userEmail = req.body.UserEmail || "";
+        const userPass = req.body.UserPass || "";
+
+        if(userEmail != "" && userPass != "") {
+            User.findOne( {UserEmail: userEmail })
+                .then( (user) => {
+                    if(!user) {
+                        res.status(400).json({ type: "error", message: serverMessages.E_EMAIL });
+                    } else {
+                        bcrypt.compare(userPass, user.UserPass, (err, isMatch) => {
+                            if(err) {
+                                res.status(500).json({ type: "error", message: `${serverMessages.E_SERVER}: ${err.message}` });
+                            } else {
+                                if(isMatch) {
+                                    res.status(200).json({ type: "success", message: "Login success. Please await token." });
+                                } else {
+                                    res.status(400).json({ type: "error", message: serverMessages.E_LOGIN });
+                                }
+                            }
+                        })
+                    }
+                })
         } else {
             res.status(400).json({ type: "error", message: serverMessages.E_DATA_1 });
         }
