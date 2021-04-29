@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const serverMessages = require("../config/server-messages");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const secret = require("../config/keys").SECRET;
 
 module.exports = class API {
     static async homeRoute(req, res) {
@@ -77,7 +79,9 @@ module.exports = class API {
                                 res.status(500).json({ type: "error", message: `${serverMessages.E_SERVER}: ${err.message}` });
                             } else {
                                 if(isMatch) {
-                                    res.status(200).json({ type: "success", message: "Login success. Please await token." });
+                                    // generate token 
+                                    let token = jwt.sign( {user: user.UserName, role: user.UserRole }, secret, {expiresIn: 86400});
+                                    res.status(200).json({ type: "success", message: "Login success", token: token });
                                 } else {
                                     res.status(400).json({ type: "error", message: serverMessages.E_LOGIN });
                                 }
@@ -88,6 +92,10 @@ module.exports = class API {
         } else {
             res.status(400).json({ type: "error", message: serverMessages.E_DATA_1 });
         }
+    }
+
+    static async getAllUsers(req, res) {
+        res.status(200).json({ message: `${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
     }
 }
 

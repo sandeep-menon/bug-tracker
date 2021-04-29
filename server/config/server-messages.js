@@ -5,5 +5,6 @@ module.exports = {
     E_SERVER: "Server encountered some error. Please try again later.",
     I_EMAIL: "Email already registered",
     E_EMAIL: "This email is not registered. Please register the user.",
-    E_LOGIN: "Incorrect email or password."
+    E_LOGIN: "Incorrect email or password.",
+    E_LOGIN_1: "Please login first."
 }
