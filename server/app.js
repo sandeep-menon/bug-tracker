@@ -21,8 +21,10 @@ mongoose.connect(db, {
     console.log(err);
 })
 
+app.use("/api", require("./routes/routes"));
+
 app.get("/", (req, res) => {
-    res.send("hello from server");
+    res.send("Server is up and running.");
 });
 
 app.listen(PORT, () => {
