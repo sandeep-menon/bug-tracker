@@ -10,10 +10,10 @@
           <v-row class="mt-6">
             <v-spacer></v-spacer>
             <v-col>
-              <v-btn color="primary" outlined large><v-icon class="mr-2">mdi-login</v-icon>Login</v-btn>
+              <v-btn color="primary" outlined large @click="gotoLogin"><v-icon class="mr-2">mdi-login</v-icon>Login</v-btn>
             </v-col>
             <v-col>
-              <v-btn color="primary" outlined large><v-icon class="mr-2">mdi-account-plus</v-icon>Register</v-btn>
+              <v-btn color="primary" outlined large @click="gotoRegister"><v-icon class="mr-2">mdi-account-plus</v-icon>Register</v-btn>
             </v-col>
             <v-spacer></v-spacer>
           </v-row>
@@ -61,6 +61,12 @@
       viewSourceCode() {
         window.open("https://github.com/sandeep-menon/bug-tracker");
       },
+      gotoRegister() {
+        this.$router.push({ name: "Register" })
+      },
+      gotoLogin() {
+        this.$router.push({ name: "Login" });
+      }
     },
   }
 </script>
