@@ -13,12 +13,8 @@
                 <v-divider></v-divider>
                 <v-container class="pa-0 mt-4">
                     <v-form ref="form" v-model="valid">
-                        
-                        <v-text-field label="Email address" v-model="loginData.email" :rules="rulesForUserEmail"></v-text-field>
-                        <v-text-field label="Password" v-model="loginData.password" type="password" :rules="rulesForUserPass"></v-text-field>
-                        <!-- <v-text-field label="Re-enter your password" v-model="userData.userPass2" type="password" :rules="rulesForUserPass2"></v-text-field> -->
-                        <!-- <v-select label="Role" v-model="userData.userRole" :items="userRoles" :rules="rulesForUserRole"></v-select> -->
-                        <!-- <p class="text-subtitle-2 text--secondary uppercase text-center">By registering, you agree to the <a @click="termsDialog = true;">terms of service</a>.</p> -->
+                        <v-text-field label="Email address" v-model="loginData.UserEmail" :rules="rulesForUserEmail"></v-text-field>
+                        <v-text-field label="Password" v-model="loginData.UserPass" type="password" :rules="rulesForUserPass"></v-text-field>
                         <v-row class="mt-5 mb-5" style="justify-content: center;">
                             <v-btn color="primary" large @click="loginUser"><v-icon class="mr-2">mdi-login</v-icon>Login</v-btn>
                         </v-row>
@@ -30,6 +26,7 @@
 </template>
 
 <script>
+import API from "../api";
 export default {
     name: "Login",
     data: () => ({
@@ -37,8 +34,8 @@ export default {
         alertMessage: "",
         valid: true,
         loginData: {
-            email: "",
-            password: ""
+            UserEmail: "",
+            UserPass: ""
         }
     }),
     computed: {
@@ -55,13 +52,28 @@ export default {
             ]
         },
     },
+    created() {
+        if(Object.keys(this.$route.params).length > 0) {
+            this.alertType = this.$route.params.type;
+            this.alertMessage = this.$route.params.message;
+        }
+    },
     methods: {
-        loginUser() {
+        async loginUser() {
             this.$refs.form.validate();
             if(this.valid) {
-                this.alertType = "success";
-                this.alertMessage = "submitting data";
+                let response = await API.loginUser(this.loginData);
+                if(response.type != "" && response.message != "") {
+                    if(response.type == "success" && response.token != "") {
+                        this.$store.dispatch("loginUser", response);
+                        this.$router.push({ name: "Users" });
+                    } else {
+                        this.alertType = response.type;
+                        this.alertMessage = response.message;
+                    }
+                }
             }
+            this.$refs.form.resetValidation();
         }
     }
 }

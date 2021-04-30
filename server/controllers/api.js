@@ -71,7 +71,7 @@ module.exports = class API {
                 .then( (user) => {
                     if(!user) {
                         // user not found
-                        res.status(400).json({ type: "error", message: serverMessages.E_EMAIL });
+                        res.status(200).json({ type: "error", message: serverMessages.E_EMAIL });
                     } else {
                         // comparing the hashed password
                         bcrypt.compare(userPass, user.UserPass, (err, isMatch) => {
@@ -81,21 +81,30 @@ module.exports = class API {
                                 if(isMatch) {
                                     // generate token 
                                     let token = jwt.sign({ user: user.UserName, role: user.UserRole, id: user._id }, secret, {expiresIn: 86400});
-                                    res.status(200).json({ type: "success", message: "Login success", token: token });
+                                    res.status(200).json({ 
+                                        type: "success", 
+                                        message: "Login success", 
+                                        token: token, 
+                                        user: {
+                                            user: user.UserName, 
+                                            email: user.UserEmail,
+                                            role: user.UserRole,
+                                            id: user._id
+                                        } });
                                 } else {
-                                    res.status(400).json({ type: "error", message: serverMessages.E_LOGIN });
+                                    res.status(200).json({ type: "error", message: serverMessages.E_LOGIN });
                                 }
                             }
                         })
                     }
                 })
         } else {
-            res.status(400).json({ type: "error", message: serverMessages.E_DATA_1 });
+            res.status(200).json({ type: "error", message: serverMessages.E_DATA_1 });
         }
     }
 
     static async getAllUsers(req, res) {
-        res.status(200).json({ message: `User id ${req.authData.id} of name ${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
+        res.status(200).json({ type: "success", message: `User id ${req.authData.id} of name ${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
     }
 }
 
