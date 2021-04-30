@@ -44,7 +44,7 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text><v-icon class="mr-2">mdi-github</v-icon>View Source Code</v-btn>
+              <v-btn color="primary" text @click="viewSourceCode()"><v-icon class="mr-2">mdi-github</v-icon>View Source Code</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -57,6 +57,11 @@
 <script>
   export default {
     name: 'Home',
+    methods: {
+      viewSourceCode() {
+        window.open("https://github.com/sandeep-menon/bug-tracker");
+      },
+    },
   }
 </script>
 
