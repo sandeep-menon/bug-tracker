@@ -13,11 +13,11 @@
           <v-divider></v-divider>
           <v-container class="pa-0 mt-4">
             <v-form ref="form" v-model="valid">
-              <v-text-field label="Full name" v-model="userData.userName" :rules="rulesForUserName" :counter="100"></v-text-field>
-              <v-text-field label="Email address" v-model="userData.userEmail" :rules="rulesForUserEmail"></v-text-field>
-              <v-text-field label="Password" v-model="userData.userPass1" type="password" :rules="rulesForUserPass1"></v-text-field>
-              <v-text-field label="Re-enter your password" v-model="userData.userPass2" type="password" :rules="rulesForUserPass2"></v-text-field>
-              <v-select label="Role" v-model="userData.userRole" :items="userRoles" :rules="rulesForUserRole"></v-select>
+              <v-text-field label="Full name" v-model="userData.UserName" :rules="rulesForUserName" :counter="100"></v-text-field>
+              <v-text-field label="Email address" v-model="userData.UserEmail" :rules="rulesForUserEmail"></v-text-field>
+              <v-text-field label="Password" v-model="userData.UserPass1" type="password" :rules="rulesForUserPass1"></v-text-field>
+              <v-text-field label="Re-enter your password" v-model="userData.UserPass2" type="password" :rules="rulesForUserPass2"></v-text-field>
+              <v-select label="Role" v-model="userData.UserRole" :items="userRoles" :rules="rulesForUserRole"></v-select>
               <p class="text-subtitle-2 text--secondary uppercase text-center">By registering, you agree to the <a @click="termsDialog = true;">terms of service</a>.</p>
               <v-row class="mt-5 mb-5" style="justify-content: center;">
                 <v-btn color="primary" large @click="registerUser"><v-icon class="mr-2">mdi-account-plus</v-icon>Register</v-btn>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import API from '../api';
 export default {
   name: 'Register',
   data: () => ({
@@ -61,11 +62,11 @@ export default {
     valid: true,
     termsDialog: false,
     userData: {
-      userName: "",
-      userEmail: "",
-      userPass1: "",
-      userPass2: "",
-      userRole: "",
+      UserName: "",
+      UserEmail: "",
+      UserPass1: "",
+      UserPass2: "",
+      UserRole: "",
     },
     userRoles: ['ADMIN', "DEV", "TEST"]
   }),
@@ -91,7 +92,7 @@ export default {
     rulesForUserPass2: function() {
       return [
         value => !!value || "Required",
-        value => value === this.userData.userPass1 || "Passwords do not match"
+        value => value === this.userData.UserPass1 || "Passwords do not match"
       ]
     },
     rulesForUserRole: function() {
@@ -101,11 +102,25 @@ export default {
     },
   },
   methods: {
-    registerUser() {
+    async registerUser() {
       this.$refs.form.validate();
       if(this.valid) {
-        this.alertType = "success";
-        this.alertMessage = "submitting data";
+        const response = await API.registerUser(this.userData);
+        if(response.type != "" && response.message != "") {
+          this.alertType = response.type;
+          this.alertMessage = response.message;
+
+          // nullify user data
+          this.userData =  {
+            UserName: "",
+            UserEmail: "",
+            UserPass1: "",
+            UserPass2: "",
+            UserRole: "",
+          };
+
+          this.$refs.form.resetValidation();
+        }
       }
     }
   }

@@ -3,7 +3,7 @@ module.exports = {
     E_DATA_1: "Incorrect or invalid data received.",
     S_USER_1: "User created successfully. Please proceed to login.",
     E_SERVER: "Server encountered some error. Please try again later.",
-    I_EMAIL: "Email already registered",
+    I_EMAIL: "Email already registered. Please login or use different email address",
     E_EMAIL: "This email is not registered. Please register the user.",
     E_LOGIN: "Incorrect email or password.",
     E_LOGIN_1: "Please login first."

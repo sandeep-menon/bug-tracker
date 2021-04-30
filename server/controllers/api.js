@@ -10,11 +10,11 @@ module.exports = class API {
     }
 
     static async registerUser(req, res) {
-        const userName = req.body.UserName;
-        const userEmail = req.body.UserEmail;
-        const userPass1 = req.body.UserPass1;
-        const userPass2 = req.body.UserPass2;
-        const userRole = req.body.UserRole;
+        const userName = req.body.UserName || "";
+        const userEmail = req.body.UserEmail || "";
+        const userPass1 = req.body.UserPass1 || "";
+        const userPass2 = req.body.UserPass2 || "";
+        const userRole = req.body.UserRole || "";
 
         if(userPass1 !== userPass2) {
             // checking passwords matching
@@ -26,7 +26,7 @@ module.exports = class API {
                 .then( (user) => {
                     if(user) {
                         // user already exists
-                        res.status(400).json({ type: "info", message: serverMessages.I_EMAIL });
+                        res.status(200).json({ type: "info", message: serverMessages.I_EMAIL });
                     } else {
                         // save user to db
                         const newUser = new User({
