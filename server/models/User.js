@@ -17,6 +17,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         enum: ["ADMIN", "DEV", "TEST", "GUEST"],
         required: true,
+    },
+    UserAbout: {
+        type: String,
     }
 });
 

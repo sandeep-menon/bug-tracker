@@ -81,6 +81,7 @@
         { title: 'Task Board', icon: 'mdi-view-grid-plus', link: "/tasks" },
         { title: 'To Do', icon: 'mdi-format-list-checks', link: "/todos" },
         { title: 'Users', icon: 'mdi-account-group', link: "/users" },
+        { title: 'My Profile', icon: 'mdi-account-details', link: "/profile" },
         { title: 'Logout', icon: 'mdi-logout', link: "/logout" },
       ],
 

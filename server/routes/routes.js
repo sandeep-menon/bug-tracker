@@ -9,6 +9,8 @@ router.get("/", API.homeRoute);
 router.post("/user/register", API.registerUser);
 router.post("/user/login", API.loginUser);
 router.get("/users", verifyToken, API.getAllUsers);
+router.get("/myprofile", verifyToken, API.getMyProfile);
+router.patch("/user/update/:id", verifyToken, API.updateUserById);
 
 function verifyToken(req, res, next) {
     try {

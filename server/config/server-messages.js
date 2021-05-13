@@ -6,5 +6,7 @@ module.exports = {
     I_EMAIL: "Email already registered. Please login or use different email address",
     E_EMAIL: "This email is not registered. Please register the user.",
     E_LOGIN: "Incorrect email or password.",
-    E_LOGIN_1: "Please login first."
+    E_LOGIN_1: "Please login first.",
+    S_PROFILE_U: "Profile updated successfully.",
+    E_USER_NF: "User not found."
 }

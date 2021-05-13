@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Users from '../views/Users.vue'
 import Logout from '../views/Logout.vue'
 import Dashboard from '../views/Dashboard.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   }
 ]
 

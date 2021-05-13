@@ -3,6 +3,7 @@ const serverMessages = require("../config/server-messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secret = require("../config/keys").SECRET;
+const { E_SERVER } = require("../config/server-messages");
 
 module.exports = class API {
     static async homeRoute(req, res) {
@@ -105,6 +106,55 @@ module.exports = class API {
 
     static async getAllUsers(req, res) {
         res.status(200).json({ type: "success", message: `User id ${req.authData.id} of name ${req.authData.user} who is ${req.authData.role} is requesting to get all users` });
+    }
+
+    static async getMyProfile(req, res) {
+        let myId = req.authData.id;
+
+        if(myId != "" && myId != undefined) {
+            User.findById( {_id: myId })
+                .then((user) => {
+                    if(user) {
+                        let userData = {
+                            id: user._id,
+                            name: user.UserName,
+                            email: user.UserEmail,
+                            role: user.UserRole,
+                            about: user.UserAbout
+                        }
+                        res.status(200).json({ type: "success", userData });
+                    } else {
+                        res.status(200).json({type: "error", message: "user not found" });
+                    }
+                })
+                .catch((err) => {
+                    res.status(500).json({ type: "error", message: serverMessages.E_SERVER });
+                })
+        }
+    }
+
+    static async updateUserById(req, res) {
+        let userId = req.params.id;
+        const updatedUser = {
+            UserName: req.body.updatedUser.name,
+            UserEmail: req.body.updatedUser.email,
+            UserRole: req.body.updatedUser.role,
+            UserAbout: req.body.updatedUser.about,
+        }
+
+        
+        User.findByIdAndUpdate(userId, updatedUser)
+            .then((user) => {
+                if(user) {
+                    res.status(200).json({ type: "success", message: serverMessages.S_PROFILE_U })
+                } else {
+                    res.status(200).json({ type: "error", message: serverMessages.E_USER_NF });
+                }
+            })
+            .catch( (err) => {
+                console.log(err);
+                res.status(500).json({ type: "error", message: serverMessages.E_SERVER });
+            })
     }
 }
 
