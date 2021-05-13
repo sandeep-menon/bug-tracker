@@ -30,7 +30,7 @@
           <v-card class="mx-auto pt-10" max-width="1024">
             <v-img class="white--text align-end" height="320px" contain src="../assets/undraw_my_personal_files_8krs.svg"></v-img>
 
-            <v-card-title style="justify-content: center;">Tech Stack</v-card-title>
+            <v-card-title class="text-h4" style="justify-content: center;">Tech Stack</v-card-title>
 
             <v-card-text class="text--primary">
               <div><b>NodeJS</b> application environment</div>

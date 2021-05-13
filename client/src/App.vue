@@ -93,9 +93,9 @@
 
     created() {
       this.$store.state.userLoggedIn = false;
-      if(sessionStorage.token === "") {
+      if(sessionStorage.token === "" || sessionStorage.token == undefined) {
         this.$store.state.userLoggedIn = false;
-      } else if (sessionStorage.token !== "") {
+      } else if (sessionStorage.token !== "" && sessionStorage.token != undefined) {
         this.$store.state.userLoggedIn = true;
       }
     }

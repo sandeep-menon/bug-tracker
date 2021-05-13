@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Login from '../views/Login.vue'
 import Users from '../views/Users.vue'
 import Logout from '../views/Logout.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: Logout
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard
   }
 ]
 

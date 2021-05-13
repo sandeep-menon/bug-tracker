@@ -66,7 +66,7 @@ export default {
                 if(response.type != "" && response.message != "") {
                     if(response.type == "success" && response.token != "") {
                         this.$store.dispatch("loginUser", response);
-                        this.$router.push({ name: "Users" });
+                        this.$router.push({ name: "Dashboard" });
                     } else {
                         this.alertType = response.type;
                         this.alertMessage = response.message;
