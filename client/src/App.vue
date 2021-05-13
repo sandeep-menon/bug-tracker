@@ -62,6 +62,7 @@
         { title: 'Users', icon: 'mdi-account-group', link: "/users" },
         { title: 'Login', icon: 'mdi-login', link: "/login" },
         { title: 'Register', icon: 'mdi-account-plus', link: "/register" },
+        { title: 'Logout', icon: 'mdi-logout', link: "/logout" },
       ]
     }),
   }

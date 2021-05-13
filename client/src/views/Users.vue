@@ -12,7 +12,7 @@ export default {
         user: ""
     }),
     async created() {
-        let token = this.$store.state.token;
+        let token = this.$store.state.token || sessionStorage.token;
         let loginData = {
             token: token,
         }
@@ -21,7 +21,7 @@ export default {
         if(response.type == "success") {
             this.user = response.message;
         } else if(response.type == "error") {
-            this.$router.push({ name: "Login", params: {type: response.type, message: response.message}});
+            this.$router.push({ name: "Login", params: {type: response.type, message: response.message} });
         }
     }
 }

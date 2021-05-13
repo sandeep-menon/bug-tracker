@@ -16,6 +16,12 @@ export default new Vuex.Store({
   
   mutations: {
     UPDATE_ON_LOGIN(state, payload) {
+      sessionStorage.token = payload.token;
+      sessionStorage.name = payload.user.user;
+      sessionStorage.email = payload.user.email;
+      sessionStorage.role = payload.user.role;
+      sessionStorage.id = payload.user.id;
+    
       state.token = payload.token;
       state.user.name = payload.user.user;
       state.user.email = payload.user.email;
@@ -24,6 +30,12 @@ export default new Vuex.Store({
     },
 
     UPDATE_ON_LOGOUT(state) {
+      sessionStorage.token = "";
+      sessionStorage.name = "";
+      sessionStorage.email = "";
+      sessionStorage.role = "";
+      sessionStorage.id = "";
+
       state.token = '';
       state.user = {
         name: '',
