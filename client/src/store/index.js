@@ -13,6 +13,7 @@ export default new Vuex.Store({
       role: ''
     },
     userLoggedIn: false,
+    userRole: "",
   },
   
   mutations: {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
       state.user.role = payload.user.role;
       state.user.id = payload.user.id;
       state.userLoggedIn = true;
+      state.userRole = payload.user.role;
     },
 
     UPDATE_ON_LOGOUT(state) {
@@ -46,6 +48,7 @@ export default new Vuex.Store({
         role: ''
       }
       state.userLoggedIn = false;
+      state.userRole = "";
     },
   },
   actions: {

@@ -93,10 +93,12 @@
 
     created() {
       this.$store.state.userLoggedIn = false;
+      this.$store.state.userRole = "";
       if(sessionStorage.token === "" || sessionStorage.token == undefined) {
         this.$store.state.userLoggedIn = false;
       } else if (sessionStorage.token !== "" && sessionStorage.token != undefined) {
         this.$store.state.userLoggedIn = true;
+        this.$store.state.userRole = sessionStorage.role;
       }
     }
   }
