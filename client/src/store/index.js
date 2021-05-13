@@ -11,7 +11,8 @@ export default new Vuex.Store({
       id: '',
       email: '',
       role: ''
-    }
+    },
+    userLoggedIn: false,
   },
   
   mutations: {
@@ -27,6 +28,7 @@ export default new Vuex.Store({
       state.user.email = payload.user.email;
       state.user.role = payload.user.role;
       state.user.id = payload.user.id;
+      state.userLoggedIn = true;
     },
 
     UPDATE_ON_LOGOUT(state) {
@@ -43,6 +45,7 @@ export default new Vuex.Store({
         email: '',
         role: ''
       }
+      state.userLoggedIn = false;
     },
   },
   actions: {

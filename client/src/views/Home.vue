@@ -28,7 +28,7 @@
       <v-row>
         <v-col cols="12" class="text-center text-h4 text--secondary">
           <v-card class="mx-auto pt-10" max-width="1024">
-            <v-img class="white--text align-end" height="200px" contain src="../assets/undraw_my_personal_files_8krs.svg"></v-img>
+            <v-img class="white--text align-end" height="320px" contain src="../assets/undraw_my_personal_files_8krs.svg"></v-img>
 
             <v-card-title style="justify-content: center;">Tech Stack</v-card-title>
 

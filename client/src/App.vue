@@ -13,7 +13,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list rounded>
+      <v-list rounded v-if="!this.$store.state.userLoggedIn">
         <v-subheader>What do you want to do today?</v-subheader>
         <v-list-item-group
           v-model="selectedItem"
@@ -33,6 +33,28 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
+      <v-list rounded v-if="this.$store.state.userLoggedIn">
+        <v-subheader>What do you want to do today?</v-subheader>
+        <v-list-item-group
+          v-model="selectedItem"
+          color="primary"
+        >
+          <v-list-item
+            v-for="(loggedInItem, i) in loggedInItems"
+            :key="i"
+            :to="loggedInItem.link"
+          >
+            <v-list-item-icon>
+              <v-icon v-text="loggedInItem.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title v-text="loggedInItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+
     </v-navigation-drawer>
     
     <v-app-bar app color="primary">
@@ -53,17 +75,29 @@
     data: () => ({ 
       drawer: null,
       selectedItem: 0,
-      items: [
-        { title: 'Home', icon: 'mdi-home', link: "/" },
+      loggedInItems: [
         { title: 'Dashboard', icon: 'mdi-view-dashboard', link: "/dashboard" },
         { title: 'Defects', icon: 'mdi-bug', link: "/defects" },
         { title: 'Task Board', icon: 'mdi-view-grid-plus', link: "/tasks" },
         { title: 'To Do', icon: 'mdi-format-list-checks', link: "/todos" },
         { title: 'Users', icon: 'mdi-account-group', link: "/users" },
+        { title: 'Logout', icon: 'mdi-logout', link: "/logout" },
+      ],
+
+      items: [
+        { title: 'Home', icon: 'mdi-home', link: "/" },
         { title: 'Login', icon: 'mdi-login', link: "/login" },
         { title: 'Register', icon: 'mdi-account-plus', link: "/register" },
-        { title: 'Logout', icon: 'mdi-logout', link: "/logout" },
       ]
     }),
+
+    created() {
+      this.$store.state.userLoggedIn = false;
+      if(sessionStorage.token === "") {
+        this.$store.state.userLoggedIn = false;
+      } else if (sessionStorage.token !== "") {
+        this.$store.state.userLoggedIn = true;
+      }
+    }
   }
 </script>
