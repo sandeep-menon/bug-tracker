@@ -3,8 +3,8 @@
         <v-alert :type="this.alertType" border="left" dismissible v-if="this.alertMessage">{{ this.alertMessage }}</v-alert>
         <v-card outlined>
             <v-overlay :opacity="0.6" :value="loading">
-                <v-progress-circular indeterminate size="32"></v-progress-circular>
-                <span class="ml-6">Loading...</span>
+                <v-progress-circular indeterminate size="32" color="accent"></v-progress-circular>
+                <span class="ml-6 text--accent">Loading...</span>
             </v-overlay>
             <v-card-title>My Profile</v-card-title>
             <v-divider></v-divider>

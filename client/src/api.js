@@ -29,4 +29,16 @@ export default class API {
         const res = await axios.patch(`${url}/user/update/${data.updatedUser.id}`, data);
         return res.data;
     }
+
+    static async getAllDefects(data) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        const res = await axios.get(`${url}/defects`, data);
+        return res.data;
+    }
+
+    static async addCommentToDefectById(data) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        const res = await axios.patch(`${url}/defect/${data.defectId}`, data);
+        return res.data;
+    }
 }

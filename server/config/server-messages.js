@@ -8,5 +8,7 @@ module.exports = {
     E_LOGIN: "Incorrect email or password.",
     E_LOGIN_1: "Please login first.",
     S_PROFILE_U: "Profile updated successfully.",
-    E_USER_NF: "User not found."
+    E_USER_NF: "User not found.",
+    E_DEFECT_NF: "Defect not found.",
+    S_COMMENT_ADD: "Comment added",
 }

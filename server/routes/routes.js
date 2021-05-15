@@ -5,12 +5,18 @@ const serverMessages = require("../config/server-messages");
 const jwt = require("jsonwebtoken");
 const secret = require("../config/keys").SECRET;
 
+/* ALL USER ROUTES */
 router.get("/", API.homeRoute);
 router.post("/user/register", API.registerUser);
 router.post("/user/login", API.loginUser);
 router.get("/users", verifyToken, API.getAllUsers);
 router.get("/myprofile", verifyToken, API.getMyProfile);
 router.patch("/user/update/:id", verifyToken, API.updateUserById);
+
+/* ALL DEFECT ROUTES */
+router.get("/defects", verifyToken, API.getAllDefects);
+router.post("/defect/new", verifyToken, API.createDefect);
+router.patch("/defect/:id", verifyToken, API.addCommentToDefectById);
 
 function verifyToken(req, res, next) {
     try {

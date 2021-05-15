@@ -1,9 +1,12 @@
+// importing schemas
 const User = require("../models/User");
+const Defect = require("../models/Defect");
+
+// importing other constants
 const serverMessages = require("../config/server-messages");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secret = require("../config/keys").SECRET;
-const { E_SERVER } = require("../config/server-messages");
 
 module.exports = class API {
     static async homeRoute(req, res) {
@@ -156,6 +159,83 @@ module.exports = class API {
                 res.status(500).json({ type: "error", message: serverMessages.E_SERVER });
             })
     }
+
+
+    /* DEFECT CONTROLLER */
+    static async getAllDefects(req, res) {
+        try {
+            const defects = await Defect.find().sort('-DefDate');
+            res.status(200).json({ type: "success", defects });
+        } catch (err) {
+            res.status(500).json({ type: "error", message: serverMessages.E_SERVER });
+        }
+    }
+    
+    static async createDefect(req, res) {
+
+        const newDefect = new Defect({
+            DefSummary : req.body.DefSummary,
+            DefDescription : req.body.DefDescription,
+            DefCreatedBy : req.authData.user
+        })
+        newDefect.save()
+            .then(() => {
+                res.status(201).json({ messgae: "OK" });
+            })
+            .catch((err) => {
+                res.status(200).json({ message: err.message });
+            })
+    }
+
+    static async addCommentToDefectById(req, res) {
+        const defectId = req.params.id || "";
+        const commentName = req.authData.user || "";
+        const commentBody = req.body.comment || "";
+
+        if(defectId == "" || commentName == "" || commentBody == "") {
+            res.status(400).json({ type: "error", message: serverMessages.E_DATA_1 });
+        } else {
+            Defect.findById(defectId)
+            .then( (defect) => {
+                if(defect) {
+                    //let comments = defect.DefComments;
+                    let newComment = {
+                        DefCommentName: commentName,
+                        DefCommentContent: commentBody
+                    }
+                    //comments.push(newComment);
+                    defect.DefComments.push(newComment);
+
+                    //let history = defect.DefHistory;
+                    let newHistory = {
+                        DefHistoryDetail: getHistoryDetail(commentName, "comment")
+                    }
+                    //history.push(newHistory);
+                    defect.DefHistory.push(newHistory);
+
+                    let updatedDefect = {
+                        $set: {
+                            DefComments: defect.DefComments,
+                            DefHistory: defect.DefHistory,
+                        }
+                    }
+                    Defect.updateOne({ _id: defectId }, updatedDefect, (err, resp) => {
+                        if(err) {
+                            res.status(500).json({ type: "error", message: serverMessages.E_SERVER });
+                        } else {
+                            res.status(201).json({ type: "success", message: serverMessages.S_COMMENT_ADD, defect });
+                        }
+                    })
+                } else {
+                    res.status(200).json({ type: "error", message: serverMessages.E_DEFECT_NF })
+                }
+            })
+            .catch( (err) => {
+                res.status(500).json({ type: "error", message: err.message });
+            })
+        }
+        
+    }
 }
 
 // helper functions
@@ -170,4 +250,10 @@ function checkUserEmail(email) {
 
 function checkUserRole(role) {
     return role == "ADMIN" || role == "DEV" || role == "TEST";
+}
+
+function getHistoryDetail(name, action) {
+    if(action == "comment") {
+        return name + " added a comment.";
+    }
 }
