@@ -67,7 +67,7 @@ module.exports = class API {
     }
 
     static async loginUser(req, res) {
-        const userEmail = req.body.UserEmail || "";
+        const userEmail = req.body.UserEmail.toLowerCase() || "";
         const userPass = req.body.UserPass || "";
 
         if(userEmail != "" && userPass != "") {
